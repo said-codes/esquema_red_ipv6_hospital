@@ -1,0 +1,217 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .wrap { padding: 1rem 0; font-family: var(--font-sans, sans-serif); }
+  .titulo { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+  .sub { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 20px; }
+
+  .prefijo-box {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .prefijo-box code {
+    font-family: var(--font-mono, monospace);
+    font-size: 12px;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  .subredes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .subred {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .subred-header {
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subred-num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .subred-nombre { font-size: 12px; font-weight: 500; }
+  .subred-body { padding: 8px 12px 10px; background: var(--color-background-secondary); }
+  .subred-addr { font-family: var(--font-mono, monospace); font-size: 10px; color: var(--color-text-secondary); margin-bottom: 4px; }
+  .subred-desc { font-size: 11px; color: var(--color-text-secondary); line-height: 1.5; }
+  .subred-devices { margin-top: 5px; display: flex; flex-wrap: wrap; gap: 4px; }
+  .dev-tag { font-size: 10px; padding: 2px 7px; border-radius: 20px; border: 0.5px solid var(--color-border-tertiary); color: var(--color-text-tertiary); }
+
+  .sr1 .subred-header { background: #E6F1FB; } .sr1 .subred-num { background:#185FA5;color:#fff; } .sr1 .subred-nombre { color:#185FA5; }
+  .sr2 .subred-header { background: #E1F5EE; } .sr2 .subred-num { background:#0F6E56;color:#fff; } .sr2 .subred-nombre { color:#0F6E56; }
+  .sr3 .subred-header { background: #EEEDFE; } .sr3 .subred-num { background:#534AB7;color:#fff; } .sr3 .subred-nombre { color:#534AB7; }
+  .sr4 .subred-header { background: #FAEEDA; } .sr4 .subred-num { background:#BA7517;color:#fff; } .sr4 .subred-nombre { color:#BA7517; }
+  .sr5 .subred-header { background: #FAECE7; } .sr5 .subred-num { background:#993C1D;color:#fff; } .sr5 .subred-nombre { color:#993C1D; }
+  .sr6 .subred-header { background: #EAF3DE; } .sr6 .subred-num { background:#3B6D11;color:#fff; } .sr6 .subred-nombre { color:#3B6D11; }
+  @media (prefers-color-scheme: dark) {
+    .sr1 .subred-header { background: #042C53; } .sr1 .subred-nombre { color:#B5D4F4; }
+    .sr2 .subred-header { background: #04342C; } .sr2 .subred-nombre { color:#9FE1CB; }
+    .sr3 .subred-header { background: #26215C; } .sr3 .subred-nombre { color:#CECBF6; }
+    .sr4 .subred-header { background: #412402; } .sr4 .subred-nombre { color:#FAC775; }
+    .sr5 .subred-header { background: #4A1B0C; } .sr5 .subred-nombre { color:#F5C4B3; }
+    .sr6 .subred-header { background: #173404; } .sr6 .subred-nombre { color:#C0DD97; }
+  }
+
+  .router-box {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+  .router-box strong { color: var(--color-text-primary); font-weight: 500; }
+  .router-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+  .router-table th { font-size: 10px; font-weight: 500; color: var(--color-text-secondary); padding: 4px 8px; text-align: left; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .router-table td { font-size: 10px; font-family: var(--font-mono, monospace); color: var(--color-text-secondary); padding: 4px 8px; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .router-table td:first-child { font-family: var(--font-sans, sans-serif); font-weight: 500; color: var(--color-text-primary); }
+  .router-table tr:last-child td { border-bottom: none; }
+</style>
+
+<div class="wrap">
+  <div class="titulo">Esquema lógico de red IPv6 — Hospital General de Salud</div>
+  <div class="sub">Plan de direccionamiento para las 6 subredes diferenciadas · Implementación en Packet Tracer</div>
+
+  <div class="prefijo-box">
+    <strong>Prefijo asignado (documentación RFC 3849):</strong> <code>2001:db8::</code> /32<br>
+    <strong>Prefijo de sitio usado:</strong> <code>2001:db8:cafe::/48</code> — divide en subredes /64 (18 trillones de hosts por subred)<br>
+    <strong>Máscara por subred:</strong> <code>/64</code> · <strong>Gateway de cada subred:</strong> primer host <code>::1</code>
+  </div>
+
+  <div class="subredes-grid">
+    <div class="subred sr1">
+      <div class="subred-header">
+        <div class="subred-num">1</div>
+        <div class="subred-nombre">Servidor web (HCE)</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:1::/64</div>
+        <div class="subred-desc">Servidor de consulta de historias clínicas electrónicas. Página web con nombre del hospital e integrantes del grupo. Solo comunicación IPv6.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">Servidor HTTP</span><span class="dev-tag">Gateway ::1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subred sr2">
+      <div class="subred-header">
+        <div class="subred-num">2</div>
+        <div class="subred-nombre">Red inalámbrica (Wi-Fi)</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:2::/64</div>
+        <div class="subred-desc">Punto de acceso Wi-Fi para personal médico móvil. Tablets y smartphones configurados con IPv6. Movilidad dentro del hospital.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">Access Point</span><span class="dev-tag">Tablet médico</span><span class="dev-tag">Smartphone</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subred sr3">
+      <div class="subred-header">
+        <div class="subred-num">3</div>
+        <div class="subred-nombre">Servidor de correo</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:3::/64</div>
+        <div class="subred-desc">Servidor de correo con dominio @hospital.com. Comunicación interna entre médicos, administrativos y especialistas sobre IPv6.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">Servidor SMTP/IMAP</span><span class="dev-tag">@hospital.com</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subred sr4">
+      <div class="subred-header">
+        <div class="subred-num">4</div>
+        <div class="subred-nombre">Usuarios locales (consultorios)</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:4::/64</div>
+        <div class="subred-desc">Estaciones de trabajo de médicos y personal administrativo. Acceden a servicios web y correo. Direccionamiento IPv6 estático.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">PC Médico</span><span class="dev-tag">PC Administración</span><span class="dev-tag">Impresora</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subred sr5">
+      <div class="subred-header">
+        <div class="subred-num">5</div>
+        <div class="subred-nombre">Sede principal (especialistas)</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:5::/64</div>
+        <div class="subred-desc">Infraestructura de la sede capital con médicos especialistas. Enlazada al hospital por router IPv6 para garantizar escalabilidad y compatibilidad futura.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">PC Especialistas</span><span class="dev-tag">Router WAN</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="subred sr6">
+      <div class="subred-header">
+        <div class="subred-num">6</div>
+        <div class="subred-nombre">Enlace router (telemedicina)</div>
+      </div>
+      <div class="subred-body">
+        <div class="subred-addr">2001:db8:cafe:6::/64</div>
+        <div class="subred-desc">Subred de interconexión entre router local del hospital y router de sede principal. Simula la red WAN de telemedicina. Tráfico exclusivamente IPv6.</div>
+        <div class="subred-devices">
+          <span class="dev-tag">Router local ::1</span><span class="dev-tag">Router sede ::2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="router-box">
+    <strong>Tabla de enrutamiento IPv6 (resumen para Packet Tracer)</strong>
+    <table class="router-table">
+      <tr>
+        <th>Router</th><th>Interfaz</th><th>Dirección IPv6</th><th>Red conectada</th>
+      </tr>
+      <tr>
+        <td>R-Hospital</td><td>Fa0/0</td><td>2001:db8:cafe:1::1/64</td><td>Subred 1 — Web</td>
+      </tr>
+      <tr>
+        <td>R-Hospital</td><td>Fa0/1</td><td>2001:db8:cafe:2::1/64</td><td>Subred 2 — WiFi</td>
+      </tr>
+      <tr>
+        <td>R-Hospital</td><td>Fa1/0</td><td>2001:db8:cafe:3::1/64</td><td>Subred 3 — Correo</td>
+      </tr>
+      <tr>
+        <td>R-Hospital</td><td>Fa1/1</td><td>2001:db8:cafe:4::1/64</td><td>Subred 4 — Consultorios</td>
+      </tr>
+      <tr>
+        <td>R-Hospital</td><td>Se0/0</td><td>2001:db8:cafe:6::1/64</td><td>Subred 6 — WAN</td>
+      </tr>
+      <tr>
+        <td>R-Sede</td><td>Se0/0</td><td>2001:db8:cafe:6::2/64</td><td>Subred 6 — WAN</td>
+      </tr>
+      <tr>
+        <td>R-Sede</td><td>Fa0/0</td><td>2001:db8:cafe:5::1/64</td><td>Subred 5 — Especialistas</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="font-size:11px;color:var(--color-text-tertiary);line-height:1.6;">
+    Nota: En Packet Tracer, habilitar IPv6 unicast routing con el comando <code style="font-family:var(--font-mono,monospace)">ipv6 unicast-routing</code> en cada router. Usar <code style="font-family:var(--font-mono,monospace)">ipv6 address 2001:db8:cafe:1::1/64</code> por interfaz. Activar <code style="font-family:var(--font-mono,monospace)">ipv6 enable</code> en cada interfaz. Para verificar conectividad: <code style="font-family:var(--font-mono,monospace)">ping ipv6 2001:db8:cafe:5::10</code>.
+  </div>
+</div>
